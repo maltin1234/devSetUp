@@ -58,3 +58,6 @@ nvm use 14
 
 # Display Node.js versions
 nvm list
+
+# Exit the script
+exit 0
