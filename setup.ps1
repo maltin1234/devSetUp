@@ -1,5 +1,7 @@
 #Variables and paths 
 $desktopPath = [Environment]::GetFolderPath('Desktop')
+$virtualboxInstalled = choco list --local-only virtualbox | Select-String -Pattern "VirtualBox"
+$correttoInstalled = choco list --local-only corretto17jdk | Select-String -Pattern "Corretto 17 JDK"
 
 
 
@@ -38,17 +40,37 @@ if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
 }
 
 #choco installations
-choco install virtualbox
-choco install corretto17jdk -y
 
-#Install nvm and npm
-# Construct the full path to the script
-$scriptPath = Join-Path -Path $desktopPath -ChildPath 'DevSetup\InstallNvmAndNode.ps1'
 
-# Run the script from the desktop
-Invoke-Expression -Command $scriptPath
+# if ($correttoInstalled) {
+#     Write-Output "Corretto 17 JDK is installed."
+# } else {
+#     Write-Output "Corretto 17 JDK is not installed."
+#     choco install corretto17jdk -y
+# }
+
+# # Update the $virtualboxInstalled variable after potentially installing Corretto 17 JDK
+# $virtualboxInstalled = choco list --local-only virtualbox | Select-String -Pattern "VirtualBox"
+
+# if ($virtualboxInstalled -and $correttoInstalled) {
+#     Write-Output "VirtualBox is installed."
+# } else {
+#     Write-Output "VirtualBox is not installed."
+#     choco install virtualbox
+# }
+
 
 #Install pyenv-win
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
 Write-Host "To install Python using pyenv-win, you can follow the instructions on the pyenv-win GitHub repository:"
 Write-Host "https://github.com/pyenv-win/pyenv-win"
+
+#InstallToolsFolder.ps1
+cd "$([Environment]::GetFolderPath([Environment+SpecialFolder]::Desktop))\devSetUp"
+.\installToolsFolder.ps1
+#InstallNvmAndNode.ps1
+cd "$([Environment]::GetFolderPath([Environment+SpecialFolder]::Desktop))\devSetUp"
+.\installNvmAndNode.ps1
+
+
+
