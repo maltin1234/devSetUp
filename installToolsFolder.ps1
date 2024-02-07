@@ -12,6 +12,7 @@ if (-not (Test-Path $toolsFolder)) {
 }
 
 # Install Visual Studio Code using Chocolatey
+
 choco install vscode -y
 
 # Move the Visual Studio Code installation to the "Tools" folder
